@@ -1,7 +1,12 @@
 import { combineReducers } from 'redux';
 
-function tasks(state = [], action) {
-    return state;
+function todo(state = [], { type, payload }) {
+    switch (type) {
+        case 'NEW':
+            return [...state, payload];
+        default:
+            return state;
+    }
 }
 
-export default combineReducers({ tasks });
+export default combineReducers({ todo });

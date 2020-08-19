@@ -21,15 +21,20 @@ export default connect(
 )(function ({ submit }) {
 
     const [what, setWhat] = useState('');
+    const onChangeWhat = function ({ target: { value } }) {
+        return setWhat(value);
+    };
+
     const [when, setWhen] = useState(new Date());
-    const classes = useStyles();
     const onSubmit = function (event) {
         event.preventDefault();
         submit({ what, when });
+        setWhat('');
+        setWhen(new Date());
     };
-    const onChangeWhat = function (event) {
-        return setWhat(event.target.value);
-    };
+
+    const classes = useStyles();
+    
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <form className={classes.root} noValidate autoComplete="off" onSubmit={onSubmit}>

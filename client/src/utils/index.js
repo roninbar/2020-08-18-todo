@@ -13,7 +13,7 @@ export default function configureStore(preloadedState) {
     const enhancers = [middlewareEnhancer, /* monitorReducersEnhancer */];
     const composedEnhancers = composeWithDevTools(...enhancers);
 
-    const store = createStore(rootReducer, preloadedState, composedEnhancers);
+    const store = createStore(rootReducer, /* preloadedState, */ composedEnhancers);
 
     return store;
 }
