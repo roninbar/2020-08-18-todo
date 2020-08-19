@@ -7,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles({
     table: {
@@ -41,6 +42,7 @@ export default function SimpleTable() {
                                 {row.what}
                             </TableCell>
                             <TableCell align="right">{row.when.toString()}</TableCell>
+                            <TableCell align="right"><Button variant="contained">Done</Button></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
