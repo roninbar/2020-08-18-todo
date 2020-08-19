@@ -2,12 +2,11 @@ import './App.css';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { createStore } from 'redux';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
-import reducers from './reducers';
+import configureStore from './utils';
 
-const store = createStore(reducers);
+const store = configureStore();
 
 function App() {
   return (
