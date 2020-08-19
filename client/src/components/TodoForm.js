@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default connect(
     null,
-    dispatch => ({ submit: ({ what, when }) => dispatch({ type: 'NEW', payload: { what, when } }) })
+    dispatch => ({ submit: ({ what, when }) => dispatch(addTodoAsync(who(), what, when)) }),
 )(function ({ submit }) {
 
     const [what, setWhat] = useState('');
@@ -34,14 +34,48 @@ export default connect(
     };
 
     const classes = useStyles();
-    
+
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <form className={classes.root} noValidate autoComplete="off" onSubmit={onSubmit}>
-                <TextField id="filled-basic" label="What" variant="filled" value={what} onChange={onChangeWhat} />
-                <DateTimePicker value={when} onChange={setWhen} />
-                <Button type="submit" variant="contained" color="primary">Add</Button>
+                <div>
+                    <TextField id="filled-basic" label="What" variant="filled" value={what} onChange={onChangeWhat} />
+                </div>
+                <div>
+                    <DateTimePicker value={when} onChange={setWhen} />
+                </div>
+                <div>
+                    <Button type="submit" variant="contained" color="primary">Add</Button>
+                </div>
             </form>
         </MuiPickersUtilsProvider>
     );
 });
+
+function who() {
+    return 'ron';
+}
+
+const NEW = 'NEW';
+
+function addTodo(who, what, when) {
+    return {
+        type: NEW,
+        payload: { who, what, when },
+    };
+}
+
+function addTodoAsync(who, what, when) {
+    return async dispatch => {
+        const response = await fetch('/todo', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ who, what, when }),
+        });
+        if (response.status === 201) {
+            dispatch(addTodo(who, what, when));
+        }
+    };
+}
