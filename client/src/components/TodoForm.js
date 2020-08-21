@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import { Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { todoAddActionAsync } from '../actions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,8 +17,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default connect(
-    null,
-    dispatch => ({ submit: ({ what, when }) => dispatch(addTodoAsync(who(), what, when)) }),
+    null, // map state to props
+    function (dispatch) { // map dispatch to props
+        return {
+            submit: function ({ what, when }) {
+                return dispatch(todoAddActionAsync(who(), what, when));
+            },
+        };
+    },
 )(function ({ submit }) {
 
     const [what, setWhat] = useState('');
@@ -26,6 +33,7 @@ export default connect(
     };
 
     const [when, setWhen] = useState(new Date());
+
     const onSubmit = function (event) {
         event.preventDefault();
         submit({ what, when });
@@ -56,26 +64,3 @@ function who() {
     return 'ron';
 }
 
-const NEW = 'NEW';
-
-function addTodo(who, what, when) {
-    return {
-        type: NEW,
-        payload: { who, what, when },
-    };
-}
-
-function addTodoAsync(who, what, when) {
-    return async dispatch => {
-        const response = await fetch('/todo', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ who, what, when }),
-        });
-        if (response.status === 201) {
-            dispatch(addTodo(who, what, when));
-        }
-    };
-}

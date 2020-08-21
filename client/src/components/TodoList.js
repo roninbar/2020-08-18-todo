@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import 'fontsource-roboto';
 import React from 'react';
 import { connect } from 'react-redux';
+import { todoUpdateListAsync } from '../actions';
 
 const useStyles = makeStyles({
     table: {
@@ -19,9 +20,11 @@ const useStyles = makeStyles({
 
 export default connect(
     ({ todo }) => ({ todo }),
-    null,
-)(function ({ todo }) {
+    dispatch => ({ updateList: () => dispatch(todoUpdateListAsync())}),
+)(function ({ todo, updateList }) {
+
     const classes = useStyles();
+
     return (
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="simple table">
@@ -33,7 +36,7 @@ export default connect(
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {todo.map(({ what, when }, idx) => (
+                    {todo.list.map(({ what, when }, idx) => (
                         <TableRow key={idx}>
                             <TableCell component="th" scope="row">
                                 {what}
