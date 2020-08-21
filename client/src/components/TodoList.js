@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import 'fontsource-roboto';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { todoUpdateListAsync } from '../actions';
 
@@ -20,8 +20,12 @@ const useStyles = makeStyles({
 
 export default connect(
     ({ todo }) => ({ todo }),
-    dispatch => ({ updateList: () => dispatch(todoUpdateListAsync())}),
+    dispatch => ({ updateList: () => dispatch(todoUpdateListAsync()) }),
 )(function ({ todo, updateList }) {
+
+    useEffect(function () {
+        updateList();
+    }, [updateList]);
 
     const classes = useStyles();
 
