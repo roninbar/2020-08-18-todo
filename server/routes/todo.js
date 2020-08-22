@@ -7,10 +7,9 @@ const todos = [];
 router.post('/', function (req, res) {
     const { who, what, when } = req.body;
     if (who && what && when) {
-        const todo = { who, what, when, done: false };
+        const id = todos.length, todo = { who, what, when, done: false };
         todos.push(todo);
-        res.setHeader('Location', `/todo/${todos.length - 1}`);
-        res.status(201).json({ id: todos.length - 1, ...todo });
+        res.status(201).setHeader('Location', `/todo/${id}`).json({ id, ...todo });
     } else {
         res.sendStatus(400);
     }
