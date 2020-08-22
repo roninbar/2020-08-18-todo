@@ -20,9 +20,7 @@ export default connect(
     null, // map state to props
     function (dispatch) { // map dispatch to props
         return {
-            submit: function ({ what, when }) {
-                return dispatch(todoAddAsync(who(), what, when));
-            },
+            submit: ({ what, when }) => what && when && dispatch(todoAddAsync(who(), what, when)),
         };
     },
 )(function ({ submit }) {
