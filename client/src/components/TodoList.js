@@ -43,9 +43,9 @@ export default connect(
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {todo.list.map(({ id, what, when }) => (
+                    {todo.list.map(({ id, what, when, done }) => (
                         <TableRow key={id}>
-                            <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row" style={{ textDecoration: done ? 'line-through' : 'none' }}>
                                 {what}
                             </TableCell>
                             <TableCell align="right">{when.toString()}</TableCell>
