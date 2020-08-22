@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { todoAddActionAsync } from '../actions';
+import { todoAddAsync } from '../actions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,7 +21,7 @@ export default connect(
     function (dispatch) { // map dispatch to props
         return {
             submit: function ({ what, when }) {
-                return dispatch(todoAddActionAsync(who(), what, when));
+                return dispatch(todoAddAsync(who(), what, when));
             },
         };
     },

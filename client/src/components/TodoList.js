@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import 'fontsource-roboto';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { todoUpdateListAsync } from '../actions';
+import { todoDoneAsync, todoUpdateListAsync } from '../actions';
 
 const useStyles = makeStyles({
     table: {
@@ -20,8 +20,11 @@ const useStyles = makeStyles({
 
 export default connect(
     ({ todo }) => ({ todo }),
-    dispatch => ({ updateList: () => dispatch(todoUpdateListAsync()) }),
-)(function ({ todo, updateList }) {
+    dispatch => ({
+        updateList: () => dispatch(todoUpdateListAsync()),
+        setDone: (id, done) => dispatch(todoDoneAsync(id, done)),
+    }),
+)(function ({ todo, updateList, setDone }) {
 
     useEffect(function () {
         updateList();
@@ -40,13 +43,15 @@ export default connect(
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {todo.list.map(({ what, when }, idx) => (
-                        <TableRow key={idx}>
+                    {todo.list.map(({ id, what, when }) => (
+                        <TableRow key={id}>
                             <TableCell component="th" scope="row">
                                 {what}
                             </TableCell>
                             <TableCell align="right">{when.toString()}</TableCell>
-                            <TableCell align="right"><Button variant="contained">Done</Button></TableCell>
+                            <TableCell align="right">
+                                <Button variant="contained" onClick={() => setDone(id, true)}>Done</Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
