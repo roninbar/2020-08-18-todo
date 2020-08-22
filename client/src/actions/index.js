@@ -15,9 +15,10 @@ export function todoReplaceList(list) {
     };
 }
 
-export function todoSetError() {
+export function todoSetError(error) {
     return {
         type: TODO_SET_ERROR,
+        payload: error,
     };
 }
 
@@ -40,7 +41,7 @@ export function todoUpdateListAsync() {
         if (response.status === 200) {
             dispatch(todoReplaceList(await response.json()));
         } else {
-            dispatch(todoSetError());
+            dispatch(todoSetError({ message: response.statusText }));
         }
     };
 }
@@ -63,7 +64,7 @@ function modifyListAsync(expectedStatus, url, fetchOptions) {
             dispatch(todoUpdateListAsync());
         }
         else {
-            dispatch(todoSetError());
+            dispatch(todoSetError({ message: response.statusText }));
         }
     };
 }

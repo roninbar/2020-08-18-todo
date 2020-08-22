@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import 'fontsource-roboto';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { todoDoneAsync, todoUpdateListAsync } from '../actions';
+import { todoDeleteAsync, todoDoneAsync, todoSetError, todoUpdateListAsync } from '../actions';
 
 const useStyles = makeStyles({
     table: {
@@ -22,9 +22,10 @@ export default connect(
     ({ todo }) => ({ todo }),
     dispatch => ({
         updateList: () => dispatch(todoUpdateListAsync()),
-        setDone: (id, done) => dispatch(todoDoneAsync(id, done)),
+        doneItem: (id, done) => dispatch(todoDoneAsync(id, done)),
+        deleteItem: (id) => dispatch(todoDeleteAsync(id)).then(error => dispatch(todoSetError({ message: error, id }))),
     }),
-)(function ({ todo, updateList, setDone }) {
+)(function ({ todo, updateList, doneItem, deleteItem }) {
 
     useEffect(function () {
         updateList();
@@ -40,17 +41,21 @@ export default connect(
                         <TableCell>What</TableCell>
                         <TableCell align="right">When</TableCell>
                         <TableCell align="right">Done</TableCell>
+                        <TableCell align="right">Delete</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {todo.list.map(({ id, what, when, done }) => (
-                        <TableRow key={id}>
+                    {todo.list.map(({ id, what, when, done, error }) => (
+                        <TableRow key={id} style={{ backgroundColor: error ? 'lightcoral' : done ? 'palegreen' : 'white' }}>
                             <TableCell component="th" scope="row" style={{ textDecoration: done ? 'line-through' : 'none' }}>
                                 {what}
                             </TableCell>
                             <TableCell align="right">{when.toString()}</TableCell>
                             <TableCell align="right">
-                                <Button variant="contained" onClick={() => setDone(id, true)}>Done</Button>
+                                <Button variant="contained" onClick={() => doneItem(id, !done)}>Done</Button>
+                            </TableCell>
+                            <TableCell align="right">
+                                <Button variant="contained" onClick={() => deleteItem(id)}>Delete</Button>
                             </TableCell>
                         </TableRow>
                     ))}
