@@ -23,7 +23,7 @@ export default connect(
     dispatch => ({
         updateList: () => dispatch(todoUpdateListAsync()),
         doneItem: (id, done) => dispatch(todoDoneAsync(id, done)),
-        deleteItem: (id) => dispatch(todoDeleteAsync(id)).then(error => dispatch(todoSetError({ message: error, id }))),
+        deleteItem: (id) => dispatch(todoDeleteAsync(id)),
     }),
 )(function ({ todo, updateList, doneItem, deleteItem }) {
 

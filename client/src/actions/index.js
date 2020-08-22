@@ -31,7 +31,7 @@ export function todoDoneAsync(id, done) {
 }
 
 export function todoDeleteAsync(id) {
-    return modifyListAsync(200, `/todo/${id}`, { method: 'delete' });
+    return modifyListAsync(204, `/todo/${id}`, { method: 'delete' });
 }
 
 export function todoUpdateListAsync() {
