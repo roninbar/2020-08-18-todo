@@ -2,6 +2,8 @@ import './App.css';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import SignInForm from './components/SignInForm';
+import SignUpForm from './components/SignUpForm';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import configureStore from './utils';
@@ -15,10 +17,10 @@ function App() {
         <Router>
           <Switch>
             <Route path="/signin">
-
+              <SignInForm />
             </Route>
             <Route path="/signup">
-
+              <SignUpForm />
             </Route>
             <Route path="/">
               <TodoForm />
