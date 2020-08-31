@@ -15,6 +15,7 @@ function App() {
     <div className="App">
       <Provider store={store}>
         <Router>
+          <h1>To Do List</h1>
           <Switch>
             <Route path="/signin">
               <SignInForm />
