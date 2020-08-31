@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import 'fontsource-roboto';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { todoDeleteAsync, todoDoneAsync, todoSetError, todoUpdateListAsync } from '../actions';
+import { todoDeleteAsync, todoDoneAsync, todoUpdateListAsync } from '../actions';
 
 const useStyles = makeStyles({
     table: {
