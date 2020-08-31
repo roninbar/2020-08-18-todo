@@ -44,15 +44,9 @@ export default connect(
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <form className={classes.root} noValidate autoComplete="off" onSubmit={onSubmit}>
-                <div>
-                    <TextField id="filled-basic" label="What" variant="filled" value={what} onChange={onChangeWhat} />
-                </div>
-                <div>
-                    <DateTimePicker value={when} onChange={setWhen} />
-                </div>
-                <div>
-                    <Button type="submit" variant="contained" color="primary">Add</Button>
-                </div>
+                <TextField variant="outlined" label="What" value={what} onChange={onChangeWhat} />
+                <DateTimePicker inputVariant="outlined" value={when} onChange={setWhen} />
+                <Button variant="contained" type="submit" color="primary" size="large">Add</Button>
             </form>
         </MuiPickersUtilsProvider>
     );
