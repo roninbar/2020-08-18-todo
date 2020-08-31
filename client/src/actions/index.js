@@ -23,15 +23,15 @@ export function todoSetError(error) {
 }
 
 export function todoAddAsync(who, what, when) {
-    return sendJsonRequestAsync(201, 'post', '/todo', { who, what, when });
+    return sendJsonRequestAsync(201, 'POST', '/todo', { who, what, when });
 }
 
 export function todoDoneAsync(id, done) {
-    return sendJsonRequestAsync(200, 'patch', `/todo/${id}`, { done });
+    return sendJsonRequestAsync(200, 'PATCH', `/todo/${id}`, { done });
 }
 
 export function todoDeleteAsync(id) {
-    return modifyListAsync(204, `/todo/${id}`, { method: 'delete' });
+    return modifyListAsync(204, `/todo/${id}`, { method: 'DELETE' });
 }
 
 export function todoUpdateListAsync() {
