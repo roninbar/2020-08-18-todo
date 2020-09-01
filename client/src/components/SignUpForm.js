@@ -30,16 +30,14 @@ class SignUpForm extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
-        const { username, password, password2, available } = this.state;
-        if (available && password && password === password2) {
-            const body = new URLSearchParams();
-            body.set('username', username);
-            body.set('password', password);
-            const response = await fetch('/user', {
-                method: 'POST',
-                body,
-            });
-        }
+        const { username, password } = this.state;
+        const body = new URLSearchParams();
+        body.set('username', username);
+        body.set('password', password);
+        await fetch('/user', {
+            method: 'POST',
+            body,
+        });
     }
 
     render() {

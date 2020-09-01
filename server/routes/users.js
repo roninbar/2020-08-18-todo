@@ -1,11 +1,12 @@
+const { hash } = require('../util/hash');
 const mysql = require('mysql2/promise');
 var express = require('express');
-var crypto = require('crypto');
+
 var router = express();
 
 router.post('/', async function (req, res) {
   const { username, password } = req.body;
-  const passwordHash = crypto.createHmac('sha256', 'xyzzy').update(password).digest('base64');
+  const passwordHash = hash(password);
   const conn = await mysql.createConnection({
     user: 'root',
     database: 'todo',
@@ -37,3 +38,4 @@ router.head('/:name([a-z0-9]*)', async function (req, res) {
 });
 
 module.exports = router;
+

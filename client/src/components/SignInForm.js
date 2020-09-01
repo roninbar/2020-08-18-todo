@@ -27,7 +27,7 @@ class SignInForm extends Component {
     async onSubmit(e) {
         e.preventDefault();
         const { username, password } = this.state;
-        const body = new FormData();
+        const body = new URLSearchParams();
         body.set('username', username);
         body.set('password', password);
         await fetch('/login', {
@@ -60,7 +60,12 @@ class SignInForm extends Component {
                     value={password}
                     onChange={this.onChangeField.bind(this)}
                 />
-                <Button type="submit" variant="contained" color="primary" size="large">Log In</Button>
+                <Button type="submit"
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    disabled={!username || !password}
+                >Log In</Button>
             </form>
         );
     }
