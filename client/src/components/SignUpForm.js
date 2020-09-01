@@ -20,6 +20,7 @@ class SignUpForm extends Component {
             username: '',
             password: '',
             password2: '',
+            available: true,
         };
     }
 
@@ -29,12 +30,12 @@ class SignUpForm extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
-        const { username, password, password2 } = this.state;
-        if (username && password === password2) {
-            const body = new FormData();
+        const { username, password, password2, available } = this.state;
+        if (available && password && password === password2) {
+            const body = new URLSearchParams();
             body.set('username', username);
             body.set('password', password);
-            const response = await fetch('/signup', {
+            const response = await fetch('/user', {
                 method: 'POST',
                 body,
             });
@@ -42,7 +43,7 @@ class SignUpForm extends Component {
     }
 
     render() {
-        const { username, password, password2 } = this.state;
+        const { username, password, password2, available } = this.state;
         const { classes } = this.props;
         return (
             <form className={classes.root} noValidate autoComplete="off" onSubmit={this.onSubmit.bind(this)}>
@@ -51,7 +52,7 @@ class SignUpForm extends Component {
                     type="text"
                     name="username"
                     label="Username"
-                    error={!username}
+                    error={!username || !available}
                     value={username}
                     onChange={this.onChange.bind(this)}
                 />
@@ -60,7 +61,7 @@ class SignUpForm extends Component {
                     type="password"
                     name="password"
                     label="Password"
-                    error={password !== password2}
+                    error={!password}
                     value={password}
                     onChange={this.onChange.bind(this)}
                 />
@@ -73,9 +74,22 @@ class SignUpForm extends Component {
                     value={password2}
                     onChange={this.onChange.bind(this)}
                 />
-                <Button variant="contained" type="submit" color="primary" size="large">Sign Up</Button>
+                <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    size="large"
+                >Sign Up</Button>
             </form>
         );
+    }
+
+    async componentDidUpdate(prevProps, { username: prevUsername }) {
+        const { username } = this.state;
+        if (username && username !== prevUsername) {
+            const { status } = await fetch(`/user/${username}`, { method: 'HEAD' });
+            this.setState({ available: status === 404 });
+        }
     }
 
 }
