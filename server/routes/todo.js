@@ -1,5 +1,8 @@
 const mysql = require('mysql2/promise');
 const express = require('express');
+const { del } = require("../util/data/del");
+const { insert } = require("../util/data/insert");
+const { update } = require("../util/data/update");
 const router = express.Router();
 
 // POST new item.
@@ -57,39 +60,4 @@ router.get('/:id', function (req, res) {
 });
 
 module.exports = router;
-
-async function del(id) {
-    const conn = await mysql.createConnection({
-        user: 'root',
-        database: 'todo',
-    });
-    const result = await conn.execute('DELETE FROM `item` WHERE id = ?', [id]);
-    conn.end();
-    return result;
-}
-
-async function insert(params) {
-    const conn = await mysql.createConnection({
-        user: 'root',
-        database: 'todo',
-    });
-    const [{ insertId }] = await conn.execute({
-        sql: 'INSERT INTO `item` SET `who` = :who, `what` = :what, `when` = :when', 
-        namedPlaceholders: true,
-    }, params);
-    await conn.end();
-    return insertId;
-}
-
-async function update(id, values) {
-    const conn = await mysql.createConnection({
-        user: 'root',
-        database: 'todo',
-    });
-    const assignments = Object.keys(values).map(key => `\`${key}\` = :${key}`).join(', ');
-    const sql = `UPDATE \`item\` SET ${assignments} WHERE \`id\` = ${id}`;
-    const [result] = await conn.execute({ sql, namedPlaceholders: true }, values);
-    conn.end();
-    return result;
-}
 
