@@ -26,14 +26,18 @@ class SignInForm extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
+        const { history } = this.props;
         const { username, password } = this.state;
         const body = new URLSearchParams();
         body.set('username', username);
         body.set('password', password);
-        await fetch('/login', {
+        const { status } = await fetch('/login', {
             method: 'post',
             body,
         });
+        if (200 <= status && status < 300 && history) {
+            history.push('/');
+        }
     }
 
     onChangeField({ target: { name, value } }) {
