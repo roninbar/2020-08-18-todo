@@ -49,8 +49,14 @@ app.use(function (req, res, next) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post('/login', passport.authenticate('local', { session: true }));
+app.post('/login',
+    passport.authenticate('local', { session: true }),
+    function (req, res) {
+        res.sendStatus(200);
+    }
+);
 app.post('/logout', function (req, res) { req.logOut(); res.sendStatus(204); })
+
 app.use('/user', require('./routes/users'));
 
 app.use(function (req, res, next) {
@@ -61,7 +67,6 @@ app.use(function (req, res, next) {
     }
 });
 
-app.use('/', require('./routes/index'));
 app.use('/todo', require('./routes/todo'));
 
 app.use(express.static(path.join(__dirname, 'public')));

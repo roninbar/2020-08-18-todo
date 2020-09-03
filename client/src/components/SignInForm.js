@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
     root: {
@@ -26,7 +27,6 @@ class SignInForm extends Component {
 
     async onSubmit(e) {
         e.preventDefault();
-        const { history } = this.props;
         const { username, password } = this.state;
         const body = new URLSearchParams();
         body.set('username', username);
@@ -35,7 +35,8 @@ class SignInForm extends Component {
             method: 'post',
             body,
         });
-        if (200 <= status && status < 300 && history) {
+        const { history } = this.props;
+        if (history && 200 <= status && status < 300) {
             history.push('/');
         }
     }
@@ -76,4 +77,4 @@ class SignInForm extends Component {
 
 }
 
-export default withStyles(styles)(SignInForm);
+export default withRouter(withStyles(styles)(SignInForm));

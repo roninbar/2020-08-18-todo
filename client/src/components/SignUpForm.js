@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TextField, withStyles, Button } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
     root: {
@@ -92,4 +93,4 @@ class SignUpForm extends Component {
 
 }
 
-export default withStyles(styles)(SignUpForm);
+export default withRouter(withStyles(styles)(SignUpForm));
