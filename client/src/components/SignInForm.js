@@ -32,7 +32,7 @@ class SignInForm extends Component {
         body.set('username', username);
         body.set('password', password);
         const { status } = await fetch('/login', {
-            method: 'post',
+            method: 'POST',
             body,
         });
         const { history } = this.props;
