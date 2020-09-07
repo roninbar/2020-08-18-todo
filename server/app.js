@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var passport = require('./util/passport');
+var MySQLStore = require('express-mysql-session');
 
 var app = express();
 
@@ -15,6 +16,10 @@ app.use(session({
     secret: 'xyzzy',
     resave: false,
     saveUninitialized: true,
+    store: new MySQLStore({
+        user: 'root',
+        database: 'todo'
+    }),
 }));
 app.use(passport.initialize());
 app.use(passport.session());
