@@ -1,19 +1,8 @@
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import { Button } from '@material-ui/core';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
-const styles = theme => ({
-    root: {
-        '& .MuiTextField-root, & .MuiButton-root': {
-            margin: theme.spacing(1),
-        },
-        '& .MuiTextField-root': {
-            width: '25ch',
-        },
-    },
-});
 
 class SignInForm extends Component {
 
@@ -76,5 +65,16 @@ class SignInForm extends Component {
     }
 
 }
+
+const styles = theme => ({
+    root: {
+        '& .MuiTextField-root, & .MuiButton-root': {
+            margin: theme.spacing(1),
+        },
+        '& .MuiTextField-root': {
+            width: '25ch',
+        },
+    },
+});
 
 export default withRouter(withStyles(styles)(SignInForm));
