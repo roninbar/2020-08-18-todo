@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import SignInForm from './components/SignInForm';
@@ -8,13 +8,32 @@ import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import configureStore from './utils';
 import { Typography } from '@material-ui/core';
+import PrivateRoute from './components/PrivateRoute';
 
 const store = configureStore();
 
 function App() {
 
-  async function onClickLogOut(e) {
-    await fetch('/logout', { method: 'POST' });
+  async function onClickLogOut(history, e) {
+    const { status } = await fetch('/logout', { method: 'POST' });
+    if (status === 205) {
+      history.push('/signin');
+    }
+  }
+
+  function ToDoWrapper({ history }) {
+    return (
+      <Fragment>
+        <div>
+          <Typography>
+            <Link to="#" onClick={onClickLogOut.bind(null, history)}>Log Out</Link>
+          </Typography>
+        </div>
+        <h1>To Do List</h1>
+        <TodoForm />
+        <TodoList />
+      </Fragment>
+    );
   }
 
   return (
@@ -25,21 +44,14 @@ function App() {
             <Route path="/signin">
               <h1>To Do List</h1>
               <SignInForm />
+              <Link to="/signup">Don't have an account yet?</Link>
             </Route>
             <Route path="/signup">
               <h1>To Do List</h1>
               <SignUpForm />
+              <Link to="/signin">Already have an account?</Link>
             </Route>
-            <Route path="/">
-              <div>
-                <Typography>
-                  <Link to="#" onClick={onClickLogOut}>Log Out</Link>
-                </Typography>
-              </div>
-              <h1>To Do List</h1>
-              <TodoForm />
-              <TodoList />
-            </Route>
+            <PrivateRoute exact path="/" component={ToDoWrapper} />
           </Switch>
         </Router>
       </Provider>
