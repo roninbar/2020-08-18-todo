@@ -26,11 +26,19 @@ app.use(function (req, res, next) {
 app.post('/login',
     passport.authenticate('local', { session: true }),
     function (req, res) {
-        res.sendStatus(200);
+        res.sendStatus(204);
     }
 );
 
-app.post('/logout', function (req, res) { req.logOut(); res.sendStatus(204); })
+app.post('/logout', function (req, res) {
+    req.session.destroy(function (err) {
+        if (err) {
+            res.sendStatus(400);
+        }
+        req.logout();
+        res.clearCookie('connect.sid').sendStatus(205);
+    })
+});
 
 app.use('/user', require('./routes/users'));
 
