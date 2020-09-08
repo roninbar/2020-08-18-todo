@@ -1,8 +1,8 @@
-const mysql = require('mysql2/promise');
 const express = require('express');
 const { del } = require("../util/data/del");
 const { insert } = require("../util/data/insert");
 const { update } = require("../util/data/update");
+const { retrieve } = require("../util/data/retrieve");
 const router = express.Router();
 
 // POST new item.
@@ -38,14 +38,7 @@ router.delete('/:id', async function (req, res) {
 
 // GET all items.
 router.get('/all', async function (req, res) {
-    const conn = await mysql.createConnection({
-        user: 'root',
-        database: 'todo',
-    });
-    conn.config.namedPlaceholders = true;
-    const [rows] = await conn.execute('SELECT * FROM `item`');
-    conn.end();
-    res.json(rows);
+    res.json(await retrieve(req.user));
 });
 
 // GET one item.
