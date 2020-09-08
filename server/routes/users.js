@@ -1,40 +1,25 @@
 const { hash } = require('../util/hash');
-const mysql = require('mysql2/promise');
+const { addUser } = require("../util/data/user/create");
+const { getUserByName } = require("../util/data/user/retrieve");
 var express = require('express');
 
 var router = express();
 
+// Create a new user account.
 router.post('/', async function (req, res) {
   const { username, password } = req.body;
-  const passwordHash = hash(password);
-  const conn = await mysql.createConnection({
-    user: 'root',
-    database: 'todo',
-  });
   try {
-    const [{ insertId }] = await conn.execute({
-      sql: 'INSERT INTO `user` SET `name` = :username, `password_hash` = :passwordHash',
-      namedPlaceholders: true,
-    }, {
-      username,
-      passwordHash,
-    });
-    conn.end();
-    res.set('Location', `${router.mountpath}/${insertId}`).sendStatus(201);
+    const id = await addUser(username, hash(password));
+    res.set('Location', `${router.mountpath}/${id}`).sendStatus(201);
   } catch (error) {
-    res.sendStatus(error.code === 'ER_DUP_ENTRY' ? 409 /* Conflict */ : 500 /* Internal Server Error */);
+    res.sendStatus(error.code === 'ER_DUP_ENTRY' ? 409 /* Conflict */ : 500);
   }
 });
 
-router.head('/:name([a-z0-9]*)', async function (req, res) {
+// Check if the given username exists.
+router.head('/:name([a-z][a-z0-9]*)', async function (req, res) {
   const { name } = req.params;
-  const conn = await mysql.createConnection({
-    user: 'root',
-    database: 'todo',
-  });
-  const [rows] = await conn.execute('SELECT * FROM `user` WHERE `name` = ?', [name]);
-  conn.end();
-  res.sendStatus(rows.length > 0 ? 200 : 404);
+  res.sendStatus(await getUserByName(name) ? 200 : 404);
 });
 
 module.exports = router;

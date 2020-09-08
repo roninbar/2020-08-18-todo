@@ -1,5 +1,5 @@
-const { del } = require("../util/data/todo/del");
-const { insert } = require("../util/data/todo/insert");
+const { del } = require("../util/data/todo/delete");
+const { insert } = require("../util/data/todo/create");
 const { update } = require("../util/data/todo/update");
 const { retrieve } = require("../util/data/todo/retrieve");
 const express = require('express');
