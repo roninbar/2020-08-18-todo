@@ -6,7 +6,7 @@ async function insert(params) {
         database: 'todo',
     });
     const [{ insertId }] = await conn.execute({
-        sql: 'INSERT INTO `item` SET `who` = :who, `what` = :what, `when` = :when',
+        sql: 'INSERT INTO `item` SET `user_id` = :who, `what` = :what, `when` = :when',
         namedPlaceholders: true,
     }, params);
     await conn.end();

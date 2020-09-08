@@ -7,9 +7,9 @@ const router = express.Router();
 
 // POST new item.
 router.post('/', async function (req, res) {
-    const { who, what, when } = req.body;
+    const { user: who, body: { what, when } } = req;
     if (who && what && when) {
-        const id = insert(req.body);
+        const id = await insert({ who, what, when });
         res.status(201).set('Location', `/todo/${id}`).json({ id, ...req.body });
     } else {
         res.sendStatus(400);
