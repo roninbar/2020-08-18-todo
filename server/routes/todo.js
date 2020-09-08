@@ -1,8 +1,8 @@
+const { del } = require("../util/data/todo/del");
+const { insert } = require("../util/data/todo/insert");
+const { update } = require("../util/data/todo/update");
+const { retrieve } = require("../util/data/todo/retrieve");
 const express = require('express');
-const { del } = require("../util/data/del");
-const { insert } = require("../util/data/insert");
-const { update } = require("../util/data/update");
-const { retrieve } = require("../util/data/retrieve");
 const router = express.Router();
 
 // POST new item.
