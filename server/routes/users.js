@@ -20,7 +20,7 @@ router.post('/', async function (req, res) {
       passwordHash,
     });
     conn.end();
-    res.setHeader('Location', `${router.mountpath}/${insertId}`).sendStatus(201);
+    res.set('Location', `${router.mountpath}/${insertId}`).sendStatus(201);
   } catch (error) {
     res.sendStatus(error.code === 'ER_DUP_ENTRY' ? 409 /* Conflict */ : 500 /* Internal Server Error */);
   }
